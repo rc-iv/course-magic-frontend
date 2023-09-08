@@ -32,6 +32,9 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
     documents: [],
     selectedDocumentID: "",
   };
+
+  console.log(`selectedDocumentID: ${selectedDocumentID}`)
+  console.log(`documents: ${JSON.stringify(documents)}`)
   const document = documents.find(
     (doc) => doc.DocumentId === selectedDocumentID
   ) || {
@@ -51,11 +54,14 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
     LastModified: "",
   };
 
+  console.log(`document: ${JSON.stringify(document)}`)
   const [showDocumentModal, setShowDocumentModal] = useState(false);
 
   const [currentDocument, setCurrentDocument] =
     useState<DocumentData>(document);
   const [refreshDocument, setRefreshDocument] = useState(false);
+console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
+
 
   // use effect that loads when the component mounts and sets the current document
   // to the document that was passed in through the location state
@@ -126,7 +132,7 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
       >
         {currentDocument.DocumentURL.startsWith("https://docs.google.com") ? (
           <iframe
-            src={currentDocument.DocumentURL}
+            src={currentDocument.DocumentURL+"?embedded=true"}
             width="100%"
             height="600px"
             title={currentDocument.DocumentName}
