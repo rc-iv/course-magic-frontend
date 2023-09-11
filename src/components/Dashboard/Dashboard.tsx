@@ -143,8 +143,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, isLoggedIn }) => {
                 />
                 <Button
                   text="Delete"
-                  bgColor="bg-red-300"
-                  textColor="text-indigo-900"
+                  bgColor="bg-red-500"
+                  textColor="text-white"
                   onClick={() => handleDeleteClick(course.CourseID)}
                 />
               </td>

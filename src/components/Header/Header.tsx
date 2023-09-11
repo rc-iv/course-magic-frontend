@@ -18,12 +18,12 @@ const Header: React.FC<HeaderProps> = ({ userLoggedIn, onLogout }) => {
   };
 
   const handleLogoout = () => {
+    navigate("/");
     onLogout();
-    handleNavigation("/login");
   }
 
   return (
-    <header className="p-4 bg-yellow-500">
+    <header className="p-4 bg-gradient-to-r from-yellow-500 to-yellow-400">
       <div className="flex justify-between items-center">
         <div className="flex-grow flex items-center">
           <Link to="/">
@@ -37,14 +37,14 @@ const Header: React.FC<HeaderProps> = ({ userLoggedIn, onLogout }) => {
             </div>
           </Link>
         </div>
-        <div className="flex space-x-2">
-          <div className="px-2">
+        <div className="flex">
+          <div className="">
             {userLoggedIn ? (
               <Button
                 text="Logout"
                 bgColor="bg-red-500"
                 textColor="text-white"
-                onClick={onLogout}
+                onClick={handleLogoout}
               />
             ) : (
               <Button
@@ -55,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ userLoggedIn, onLogout }) => {
               />
             )}
           </div>
-          <div className="px-2">
+          <div className="">
             {userLoggedIn ? (
               <Button
                 text="Dashboard"

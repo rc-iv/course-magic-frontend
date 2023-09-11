@@ -7,7 +7,6 @@ test('renders CreateDocumentModal', () => {
     courseName='algebra' 
     gradeLevel='9'
     documentName='syllabus'
-    categoryId='syllabus'
     documentType='syllabus'
     topicAdditional='syllabus' 
     aptitudeLevel='syllabus'
@@ -16,7 +15,9 @@ test('renders CreateDocumentModal', () => {
     embedURL='syllabus'
     mode='edit'
     documentId='syllabus'
-    onClose={()=>{}} />);
+    categoryName='syllabus'
+    onClose={()=>{}} />   
+    );
   const element = getByText(/CreateDocumentModal Component/i);
   expect(element).toBeInTheDocument();
 });

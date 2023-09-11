@@ -6,7 +6,8 @@ interface SignUpProps {
   onLogin: (userInfo: {
     firstName: string;
     lastName: string;
-    email: string;}) => void;
+    email: string;
+  }) => void;
 }
 
 const registerUser = async (
@@ -45,6 +46,8 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
 
@@ -54,12 +57,12 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
       return;
     }
     try {
-      const { message } = await registerUser(email, password, "John", "Doe");
+      const { message } = await registerUser(email, password, firstName, lastName);
       console.log(`Registration successful: ${message}, for email: ${email}`);
       const userInfo = {
-        firstName: "John",
-        lastName: "Doe",
-        email: email
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
       };
       onLogin(userInfo);
       navigate("/dashboard"); // Navigate to dashboard
@@ -84,6 +87,32 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-sm font-bold mb-2" htmlFor="first-name">
+          First Name
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-black"
+          id="first-name"
+          type="text"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-sm font-bold mb-2" htmlFor="last-name">
+          Last Name
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-black"
+          id="last-name"
+          type="text"
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
         />
       </div>
       <div className="mb-4">

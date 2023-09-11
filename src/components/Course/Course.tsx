@@ -42,6 +42,7 @@ interface DocumentData {
   UserEmail: string;
   CreatedAt: string;
   LastModified: string;
+  CourseName: string;
 }
 
 interface LocationState {
@@ -117,12 +118,11 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
     fetchDocuments();
   }, [course.CourseID, refreshDocuments]);
 
-
   // useEffect hook that runs when the component mounts, and when refreshCourses changes
   useEffect(() => {
     setCurrentCourse(course);
   }, [course]);
-  
+
   // use effect hook that refreshes the course when the refreshCourse state changes
   // this is triggered when the course is edited
   useEffect(() => {
@@ -133,7 +133,7 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
         );
         if (response.ok) {
           const updatedCourse = await response.json();
-          console.log(`Updated course:`, updatedCourse)
+          console.log(`Updated course:`, updatedCourse);
           setCurrentCourse(updatedCourse); // Update the current course
         } else {
           console.error("Failed to fetch updated course:", response.status);
@@ -184,11 +184,11 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
 
   return (
     <div className="container mx-auto my-8 text-center text-white">
-      {/* Course Information */}
-      <h2 className="text-2xl font-bold mb-4">{currentCourse.CourseName}</h2>
-      <div className="course-info-container my-8 p-4 border rounded">
-        <div className="flex justify-between">
+      <div className="course-info-container w-1/4 my-8 p-4 border rounded">
+        <h2 className="text-2xl font-bold mb-4">{currentCourse.CourseName}</h2>
+        <div className="flex">
           {/* Course Details */}
+
           <div className="course-details text-left">
             <p>
               Subject:<strong> {currentCourse.CourseSubject}</strong>
@@ -207,13 +207,6 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
               onClick={() => setShowCourseModal(true)}
             />
           </div>
-          {/* Additional Instructions */}
-          <div className="additional-instructions w-1/2 text-left">
-            Additional Instructions:
-            <p className="w-full h-24">
-              <strong>{currentCourse.AdditionalInfo}</strong>
-            </p>
-          </div>
         </div>
       </div>
 
@@ -221,6 +214,12 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
       <div className="flex justify-center items-center mb-4 relative">
         <h2 className="text-2xl font-bold">Documents</h2>
         <div className="absolute right-4">
+          <Button
+            text="Refresh"
+            bgColor="bg-green-300"
+            textColor="text-indigo-900"
+            onClick={() => setRefreshDocuments(!refreshDocuments)}
+          />
           <Button
             text="Create Document"
             bgColor="bg-yellow-300"
@@ -286,7 +285,7 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
       {showDocumentModal && (
         <CreateDocumentModal
           documentName=""
-          categoryId=""
+          categoryName=""
           documentType=""
           courseName={currentCourse.CourseName}
           gradeLevel={currentCourse.GradeLevel}

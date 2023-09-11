@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-yellow-500 text-indigo-900 py-4">
+    <footer className=" bg-gradient-to-r from-yellow-500 to-yellow-400 text-indigo-900 py-4">
       <div className="container mx-auto text-center">
         <a
           href="#"

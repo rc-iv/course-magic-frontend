@@ -21,6 +21,7 @@ interface DocumentData {
   UserEmail: string;
   CreatedAt: string;
   LastModified: string;
+  CourseName: string;
 }
 
 const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
@@ -33,8 +34,8 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
     selectedDocumentID: "",
   };
 
-  console.log(`selectedDocumentID: ${selectedDocumentID}`)
-  console.log(`documents: ${JSON.stringify(documents)}`)
+  console.log(`selectedDocumentID: ${selectedDocumentID}`);
+  console.log(`documents: ${JSON.stringify(documents)}`);
   const document = documents.find(
     (doc) => doc.DocumentId === selectedDocumentID
   ) || {
@@ -52,16 +53,26 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
     UserEmail: "",
     CreatedAt: "",
     LastModified: "",
+    CourseName: "",
   };
 
-  console.log(`document: ${JSON.stringify(document)}`)
+  console.log(`document: ${JSON.stringify(document)}`);
   const [showDocumentModal, setShowDocumentModal] = useState(false);
 
   const [currentDocument, setCurrentDocument] =
     useState<DocumentData>(document);
   const [refreshDocument, setRefreshDocument] = useState(false);
-console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
+  console.log(`currentDocument: ${JSON.stringify(currentDocument)}`);
 
+  // Function to handle document selection from dropdown
+  const handleDocumentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedDoc = documents.find(
+      (doc) => doc.DocumentId === e.target.value
+    );
+    if (selectedDoc) {
+      setCurrentDocument(selectedDoc);
+    }
+  };
 
   // use effect that loads when the component mounts and sets the current document
   // to the document that was passed in through the location state
@@ -72,7 +83,7 @@ console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
   // use effect that loads when the refreshDocument state changes
   // and fetches the updated document from the API
   useEffect(() => {
-    console.log(`selectedDocumentID: ${selectedDocumentID}`)
+    console.log(`selectedDocumentID: ${selectedDocumentID}`);
     const fetchDocument = async () => {
       const response = await fetch(
         `https://n2v4kawif7.execute-api.us-east-1.amazonaws.com/dev/documents/${selectedDocumentID}`
@@ -80,7 +91,7 @@ console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
       const data = await response.json();
       setCurrentDocument(data);
     };
-    if (refreshDocument){
+    if (refreshDocument) {
       fetchDocument();
       setRefreshDocument(false);
     }
@@ -88,12 +99,22 @@ console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
 
   return (
     <div className="container mx-auto my-8 text-center text-white">
-      {/* Document Information */}
-      <h2 className="text-2xl font-bold mb-4">{currentDocument.DocumentName}</h2>
-      <div className="document-info-container my-8 p-4 border rounded">
+      <div className="document-info-container my-8 p-4 border rounded w-1/3">
         <div className="flex justify-between">
           {/* Document Details */}
           <div className="document-details text-left">
+            Document: 
+            <select
+              value={currentDocument.DocumentId}
+              onChange={handleDocumentChange}
+              className="border rounded p-2 text-black h-10"
+            >
+              {documents.map((doc) => (
+                <option key={doc.DocumentId} value={doc.DocumentId}>
+                  {doc.DocumentName}
+                </option>
+              ))}
+            </select>
             <p>
               Category:<strong> {currentDocument.DocumentCategory}</strong>
             </p>
@@ -102,7 +123,7 @@ console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
             </p>
             <p>
               Course:
-              <strong> {currentDocument.CourseId}</strong>
+              <strong> {currentDocument.CourseName}</strong>
             </p>
             <p>
               Grade Level:
@@ -115,13 +136,6 @@ console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
               onClick={() => setShowDocumentModal(true)}
             />
           </div>
-          {/* Additional Information */}
-          <div className="additional-info w-1/2 text-left">
-            Additional Information:
-            <p className="w-full h-24">
-              <strong>{currentDocument.TopicAdditionalInfo}</strong>
-            </p>
-          </div>
         </div>
       </div>
 
@@ -132,7 +146,7 @@ console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
       >
         {currentDocument.DocumentURL.startsWith("https://docs.google.com") ? (
           <iframe
-            src={currentDocument.DocumentURL+"?embedded=true"}
+            src={currentDocument.DocumentURL + "?embedded=true"}
             width="100%"
             height="600px"
             title={currentDocument.DocumentName}
@@ -146,7 +160,7 @@ console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
       {showDocumentModal && (
         <CreateDocumentModal
           documentName={currentDocument.DocumentName}
-          categoryId={currentDocument.DocumentCategory}
+          categoryName={currentDocument.DocumentCategory}
           documentType={currentDocument.DocumentType}
           courseName={currentDocument.CourseId}
           gradeLevel={currentDocument.GradeLevel}
@@ -156,10 +170,11 @@ console.log(`currentDocument: ${JSON.stringify(currentDocument)}`)
           courseID={currentDocument.CourseId}
           userEmail={currentDocument.UserEmail}
           documentId={currentDocument.DocumentId}
-          mode = "edit"
+          mode="edit"
           onClose={() => {
             setRefreshDocument(true);
-            setShowDocumentModal(false)}}
+            setShowDocumentModal(false);
+          }}
         />
       )}
     </div>

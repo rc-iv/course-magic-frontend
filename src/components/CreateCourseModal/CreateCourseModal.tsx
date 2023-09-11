@@ -44,7 +44,7 @@ const gradeLevels = [
   "Masters",
   "Doctorate",
 ];
-const aptitudeLevels = ["","Remedial", "Beginner", "Intermediate", "Advanced"];
+const aptitudeLevels = ["Remedial", "Beginner", "Intermediate", "Advanced"];
 
 const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
   onClose,
@@ -58,10 +58,10 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
   userEmail,
 }) => {
   const [courseName, setCourseName] = useState(name);
-  const [courseSubject, setCourseSubject] = useState(subject);
-  const [gradeLevel, setGradeLevel] = useState(grade);
-  const [aptitudeLevel, setAptitudeLevel] = useState(aptitude);
-  const [additionalInfo, setAdditionalInfo] = useState(additionalInstructions);
+  const [courseSubject, setCourseSubject] = useState(subject || courseSubjects[0]);
+  const [gradeLevel, setGradeLevel] = useState(grade || gradeLevels[0]);
+  const [aptitudeLevel, setAptitudeLevel] = useState(aptitude || aptitudeLevels[0]);
+  const [additionalInfo, setAdditionalInfo] = useState(additionalInstructions || "Enter additional instructions here");
 
 
   // Handle the okay click
@@ -96,8 +96,8 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
   };
   
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 text-black">
-      <div className="bg-white p-8 rounded-lg w-1/2 relative border-4 border-indigo-500">
+    <div className="fixed inset-0 flex items-center justify-center z-50 text-indigo-800">
+      <div className="bg-gradient-to-r from-indigo-200 to-indigo-100 p-8 rounded-lg w-1/2 relative border-4 border-indigo-200">
         <button onClick={onClose} className="absolute top-0 left-0 p-4">
           X
         </button>
@@ -105,7 +105,7 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
         <form className="grid grid-cols-2 gap-4" onSubmit={(e) => e.preventDefault()}>
           <div className="col-span-1 space-y-4">
             <div className="flex items-center">
-              <label htmlFor="courseName" className="w-1/3 text-right mr-4">
+              <label htmlFor="courseName" className="w-1/2 text-right mr-4 font-bold">
                 Course Name
               </label>
               <input
@@ -118,53 +118,50 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
               />
             </div>
             <div className="flex items-center">
-              <label htmlFor="courseSubject" className="w-1/3 text-right mr-4">
+              <label htmlFor="courseSubject" className="w-1/2 text-right mr-4 font-bold">
                 Course Subject
               </label>
               <select
                 id="courseSubject"
                 className="w-2/3 border"
-                value={courseSubject}
                 onChange={(e) => setCourseSubject(e.target.value)}
                 required
               >
                 {courseSubjects.map((subject, index) => (
-                  <option key={index} value={subject}>
+                  <option key={index} value={subject} selected={courseSubject===subject}>
                     {subject}
                   </option>
                 ))}
               </select>
             </div>
             <div className="flex items-center">
-              <label htmlFor="gradeLevel" className="w-1/3 text-right mr-4">
+              <label htmlFor="gradeLevel" className="w-1/2 text-right mr-4 font-bold">
                 Grade Level
               </label>
               <select
                 id="gradeLevel"
                 className="w-2/3 border"
-                value={gradeLevel}
                 onChange={(e) => setGradeLevel(e.target.value)}
                 required
               >
                 {gradeLevels.map((level, index) => (
-                  <option key={index} value={level}>
+                  <option key={index} value={level} selected={gradeLevel===level}>
                     {level}
                   </option>
                 ))}
               </select>
             </div>
             <div className="flex items-center">
-              <label htmlFor="aptitudeLevel" className="w-1/3 text-right mr-4">
+              <label htmlFor="aptitudeLevel" className="w-1/2 text-right mr-4 font-bold">
                 Aptitude Level
               </label>
               <select
                 id="aptitudeLevel"
                 className="w-2/3 border"
-                value={aptitudeLevel}
                 onChange={(e) => setAptitudeLevel(e.target.value)}
               >
                 {aptitudeLevels.map((level, index) => (
-                  <option key={index} value={level}>
+                  <option key={index} value={level} selected={aptitudeLevel===level}>
                     {level}
                   </option>
                 ))}
@@ -172,7 +169,7 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
             </div>
           </div>
           <div className="col-span-1">
-            <label htmlFor="additionalInstructions" className="block mb-2">
+            <label htmlFor="additionalInstructions" className="block mb-2 font-bold">
               Additional Instructions
             </label>
             <textarea

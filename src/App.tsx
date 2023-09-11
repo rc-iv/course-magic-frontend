@@ -26,13 +26,14 @@ const App: React.FC = () => {
 
   const handleLogout = () => {
     setUserLoggedIn(false);
+    setUser({ firstName: "", lastName: "", email: "" });
   };
 
   return (
     <Router>
       <div className="App flex flex-col min-h-screen">
         <Header userLoggedIn={userLoggedIn} onLogout={handleLogout} />
-        <main className="flex-grow bg-indigo-950">
+        <main className="flex-grow bg-gradient-to-r from-indigo-950 to-indigo-800 h-screen">
           <Routes>
             <Route path="/" element={<FeatureSection />} />
             <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
@@ -44,7 +45,7 @@ const App: React.FC = () => {
             />
             <Route
               path="/course"
-              element={<Course user={user}isLoggedIn={userLoggedIn} />}
+              element={<Course user={user} isLoggedIn={userLoggedIn} />}
             />
             <Route
               path="/document"
