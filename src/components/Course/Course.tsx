@@ -88,6 +88,9 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
   // State to control the document to delete
   const [documentToDelete, setDocumentToDelete] = useState<string | null>(null);
 
+  // State to control the creation of a new document, works with useEffect hook to refresh page
+  const [isCreatingNewDocument, setIsCreatingNewDocument] = useState(false);
+
   // Hook to navigate to the document page
   const navigate = useNavigate();
   const handleNavigation = (path: string, documentId: string) => {
@@ -99,7 +102,10 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
   // useEffect hook that runs when the component mounts, and when refreshCourses changes
   // populates documents from api to display on the page
   useEffect(() => {
+    let intervalId: any;
+    console.log("useEffect hook triggered to fetch documents")
     const fetchDocuments = async () => {
+      console.log("fetch documetns called")
       try {
         const response = await fetch(
           `https://n2v4kawif7.execute-api.us-east-1.amazonaws.com/dev/documents?courseId=${course.CourseID}`
@@ -115,8 +121,24 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
       }
     };
 
-    fetchDocuments();
-  }, [course.CourseID, refreshDocuments]);
+    if (isCreatingNewDocument) {
+      console.log("starting interval")
+      // Start the interval
+      intervalId = setInterval(() => {
+        fetchDocuments();
+      }, 5000); // Fetch every 5 seconds
+    } else {
+      console.log("fetching immediately")
+      // Fetch immediately if not in the "creating new document" state
+      fetchDocuments();
+    }
+    // Cleanup
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [course.CourseID, isCreatingNewDocument, documents.length, refreshDocuments]);
 
   // useEffect hook that runs when the component mounts, and when refreshCourses changes
   useEffect(() => {
@@ -150,7 +172,6 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
   }, [refreshCourse, selectedCourseID]);
 
   const handleDocumentCreated = () => {
-    setRefreshDocuments(!refreshDocuments);
     setShowDocumentModal(false);
   };
 
@@ -298,6 +319,7 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
           mode="create"
           onClose={() => {
             setRefreshDocuments(!refreshDocuments);
+            setIsCreatingNewDocument(true);
             setShowDocumentModal(false);
           }}
         />

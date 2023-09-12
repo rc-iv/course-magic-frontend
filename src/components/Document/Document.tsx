@@ -99,11 +99,12 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
 
   return (
     <div className="container mx-auto my-8 text-center text-white">
-      <div className="document-info-container my-8 p-4 border rounded w-1/3">
+      {/* Document Information Container */}
+      <div className="my-8 p-4 border rounded w-1/3">
         <div className="flex justify-between">
           {/* Document Details */}
-          <div className="document-details text-left">
-            Document: 
+          <div className="text-left">
+            Document:
             <select
               value={currentDocument.DocumentId}
               onChange={handleDocumentChange}
@@ -139,9 +140,9 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
         </div>
       </div>
 
-      {/* Embedded Document */}
+      {/* Embedded Document Container*/}
       <div
-        className="document-embed-container my-8 mx-auto"
+        className="my-8 mx-auto"
         style={{ width: "100%", maxWidth: "800px" }}
       >
         {currentDocument.DocumentURL.startsWith("https://docs.google.com") ? (
@@ -157,6 +158,7 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
         )}
       </div>
 
+      {/* Edit Document Modal */}
       {showDocumentModal && (
         <CreateDocumentModal
           documentName={currentDocument.DocumentName}
