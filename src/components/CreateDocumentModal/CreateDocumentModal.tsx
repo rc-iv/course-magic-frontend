@@ -151,7 +151,7 @@ const CreateDocumentModal: React.FC<CreateDocumentModalProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 text-indigo-800">
-      <div className="bg-gradient-to-r from-indigo-200 to-indigo-100 p-8 rounded-lg w-1/2 relative border-4 border-indigo-200">
+      <div className="bg-gradient-to-r from-indigo-200 to-indigo-100 p-8 rounded-lg md:w-1/2 relative border-4 border-indigo-200">
         <button onClick={onClose} className="absolute top-0 left-0 p-4">
           X
         </button>
