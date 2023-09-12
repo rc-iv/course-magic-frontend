@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import Button from "../Button/Button";
 import CreateCourseModal from "../CreateCourseModal/CreateCourseModal";
@@ -57,20 +57,22 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
     courses: [],
     selectedCourseID: "",
   };
-  const course = courses.find(
-    (course) => course.CourseID === selectedCourseID
-  ) || {
-    CourseID: "",
-    AdditionalInfo: "",
-    AptitudeLevel: "",
-    CourseName: "",
-    CreatedAt: "",
-    Documents: [],
-    GradeLevel: "",
-    LastModified: "",
-    UserEmail: "",
-    CourseSubject: "",
-  };
+  const course = useMemo(() => {
+    return (
+      courses.find((course) => course.CourseID === selectedCourseID) || {
+        CourseID: "",
+        AdditionalInfo: "",
+        AptitudeLevel: "",
+        CourseName: "",
+        CreatedAt: "",
+        Documents: [],
+        GradeLevel: "",
+        LastModified: "",
+        UserEmail: "",
+        CourseSubject: "",
+      }
+    );
+  }, [courses, selectedCourseID]);
 
   // State to control the modals
   const [showCourseModal, setShowCourseModal] = useState(false);
@@ -103,9 +105,9 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
   // populates documents from api to display on the page
   useEffect(() => {
     let intervalId: any;
-    console.log("useEffect hook triggered to fetch documents")
+    console.log("useEffect hook triggered to fetch documents");
     const fetchDocuments = async () => {
-      console.log("fetch documetns called")
+      console.log("fetch documetns called");
       try {
         const response = await fetch(
           `https://n2v4kawif7.execute-api.us-east-1.amazonaws.com/dev/documents?courseId=${course.CourseID}`
@@ -122,13 +124,13 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
     };
 
     if (isCreatingNewDocument) {
-      console.log("starting interval")
+      console.log("starting interval");
       // Start the interval
       intervalId = setInterval(() => {
         fetchDocuments();
       }, 5000); // Fetch every 5 seconds
     } else {
-      console.log("fetching immediately")
+      console.log("fetching immediately");
       // Fetch immediately if not in the "creating new document" state
       fetchDocuments();
     }
@@ -138,7 +140,12 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
         clearInterval(intervalId);
       }
     };
-  }, [course.CourseID, isCreatingNewDocument, documents.length, refreshDocuments]);
+  }, [
+    course.CourseID,
+    isCreatingNewDocument,
+    documents.length,
+    refreshDocuments,
+  ]);
 
   // useEffect hook that runs when the component mounts, and when refreshCourses changes
   useEffect(() => {
@@ -171,10 +178,6 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
     }
   }, [refreshCourse, selectedCourseID]);
 
-  const handleDocumentCreated = () => {
-    setShowDocumentModal(false);
-  };
-
   // Handle the course being deleted
   const handleDocumentDeleted = async () => {
     if (documentToDelete) {
@@ -204,8 +207,8 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
   };
 
   return (
-    <div className="container mx-auto my-8 text-center text-white">
-      <div className="course-info-container w-1/4 my-8 p-4 border rounded">
+    <div className="mx-auto my-8 text-center text-white">
+      <div className="md:w-1/4 mx-1 my-8 p-4 border rounded">
         <h2 className="text-2xl font-bold mb-4">{currentCourse.CourseName}</h2>
         <div className="flex">
           {/* Course Details */}
@@ -232,9 +235,9 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
       </div>
 
       {/* Documents */}
-      <div className="flex justify-center items-center mb-4 relative">
+      <div className="flex justify-between items-center mb-4  ">
         <h2 className="text-2xl font-bold">Documents</h2>
-        <div className="absolute right-4">
+        <div className="">
           <Button
             text="Refresh"
             bgColor="bg-green-300"
@@ -249,13 +252,12 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
           />
         </div>
       </div>
-      <table className="mx-auto w-full text-left border-collapse">
+      <table className="mx-auto text-left  md:w-full mx-1">
         <thead>
           <tr>
-            <th className="border px-4 py-2">Name</th>
-            <th className="border px-4 py-2">Type</th>
-            <th className="border px-4 py-2">Last Updated</th>
-            <th className="border px-4 py-2">Options</th>
+            <th className="border px-1 py-2">Name</th>
+            <th className="border px-1 py-2">Type</th>
+            <th className="border px-1 py-2">Options</th>
           </tr>
         </thead>
         <tbody>
@@ -263,7 +265,6 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
             <tr key={index}>
               <td className="border px-4 py-2">{doc.DocumentName}</td>
               <td className="border px-4 py-2">{doc.DocumentType}</td>
-              <td className="border px-4 py-2">{doc.LastModified}</td>
               <td className="border px-4 py-2">
                 <Button
                   text="View"
@@ -276,11 +277,6 @@ const Course: React.FC<CourseProps> = ({ user, isLoggedIn }) => {
                   bgColor="bg-red-300"
                   textColor="text-indigo-900"
                   onClick={() => handleDeleteClick(doc.DocumentId)}
-                />
-                <Button
-                  text="Download"
-                  bgColor="bg-green-300"
-                  textColor="text-indigo-900"
                 />
               </td>
             </tr>

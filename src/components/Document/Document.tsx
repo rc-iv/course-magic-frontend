@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import Button from "../Button/Button";
 import CreateDocumentModal from "../CreateDocumentModal/CreateDocumentModal";
@@ -36,25 +36,27 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
 
   console.log(`selectedDocumentID: ${selectedDocumentID}`);
   console.log(`documents: ${JSON.stringify(documents)}`);
-  const document = documents.find(
-    (doc) => doc.DocumentId === selectedDocumentID
-  ) || {
-    // ... default empty document object
-    DocumentId: "",
-    DocumentName: "",
-    DocumentCategory: "",
-    DocumentType: "",
-    GradeLevel: "",
-    AptitudeLevel: "",
-    TopicAdditionalInfo: "",
-    AI_Prompt: "",
-    DocumentURL: "",
-    CourseId: "",
-    UserEmail: "",
-    CreatedAt: "",
-    LastModified: "",
-    CourseName: "",
-  };
+  const document = useMemo(() => {
+    return (
+      documents.find((doc) => doc.DocumentId === selectedDocumentID) || {
+        // ... default empty document object
+        DocumentId: "",
+        DocumentName: "",
+        DocumentCategory: "",
+        DocumentType: "",
+        GradeLevel: "",
+        AptitudeLevel: "",
+        TopicAdditionalInfo: "",
+        AI_Prompt: "",
+        DocumentURL: "",
+        CourseId: "",
+        UserEmail: "",
+        CreatedAt: "",
+        LastModified: "",
+        CourseName: "",
+      }
+    );
+  }, [documents, selectedDocumentID]);
 
   console.log(`document: ${JSON.stringify(document)}`);
   const [showDocumentModal, setShowDocumentModal] = useState(false);
@@ -100,7 +102,7 @@ const Document: React.FC<DocumentProps> = ({ isLoggedIn }) => {
   return (
     <div className="container mx-auto my-8 text-center text-white">
       {/* Document Information Container */}
-      <div className="my-8 p-4 border rounded w-1/3">
+      <div className="my-8 p-4 mx-1 border rounded md:w-1/3">
         <div className="flex justify-between">
           {/* Document Details */}
           <div className="text-left">

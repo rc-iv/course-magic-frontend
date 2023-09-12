@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import logo from "../../assets/images/logo.png";
 import Button from "../Button/Button";
 import { Link, useNavigate } from "react-router-dom";
-import { on } from "events";
 
 interface HeaderProps {
   userLoggedIn: boolean;
@@ -10,7 +9,6 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ userLoggedIn, onLogout }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Add this line
 
   const handleNavigation = (path: string) => {
@@ -37,8 +35,8 @@ const Header: React.FC<HeaderProps> = ({ userLoggedIn, onLogout }) => {
             </div>
           </Link>
         </div>
-        <div className="flex">
-          <div className="">
+        <div className="flex-row md:flex">
+          <div className="ml-6">
             {userLoggedIn ? (
               <Button
                 text="Logout"

@@ -62,7 +62,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="container mx-auto my-16 p-4 w-1/3 text-white">
+    <div className="mx-auto my-16 p-4 md:w-1/3 text-white">
       <h1 className="text-4xl font-bold mb-8">Login</h1>
       <div className="mb-4">
         <label htmlFor="email" className="block text-sm font-bold mb-2">

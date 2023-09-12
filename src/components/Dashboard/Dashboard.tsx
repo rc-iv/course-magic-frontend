@@ -100,11 +100,11 @@ const Dashboard: React.FC<DashboardProps> = ({ user, isLoggedIn }) => {
   }, [user.email, refreshCourses]);
 
   return (
-    <div className="container mx-auto my-16 text-center text-white">
-      <h1 className="text-4xl font-bold mb-8">Welcome {user.firstName}</h1>
-      <div className="flex justify-center items-center mb-4 relative">
+    <div className="text-center text-white">
+      <h1 className="text-4xl font-bold mb-8 mt-8">Welcome {user.firstName}</h1>
+      <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Courses</h2>
-        <div className="absolute right-0">
+        <div className="">
           <Button
             text="Create Course"
             bgColor="bg-yellow-300"
@@ -113,36 +113,23 @@ const Dashboard: React.FC<DashboardProps> = ({ user, isLoggedIn }) => {
           />
         </div>
       </div>
-      <div className="w-1/2 m-auto border-4">
-        <div className="flex border-4 border-green-800">
-          <div>
-            <h2 className="text-2xl font-medium border-4">Courses</h2>
-          </div>
-          <div className="border-4">
-            <Button
-              text="Create Course"
-              bgColor="bg-yellow-300"
-              textColor="text-indigo-900"
-              onClick={() => setShowModal(true)}
-            />
-          </div>
-        </div>
-        <table className="mx-auto text-left border-collapse w-full">
+      <div className="m-auto border-4">
+        <table className="mx-auto text-left w-full">
           <thead>
             <tr>
-              <th className="border px-4 py-2">Name</th>
-              <th className="border px-4 py-2">Grade</th>
-              <th className="border px-4 py-2">Subject</th>
-              <th className="border px-4 py-2">Options</th>
+              <th className="border px-2 py-2">Name</th>
+              <th className="border px-2 py-2">Grade</th>
+              <th className="border px-2 py-2">Subject</th>
+              <th className="border px-2 py-2">Options</th>
             </tr>
           </thead>
           <tbody>
             {courses.map((course, index) => (
               <tr key={index}>
-                <td className="border px-4 py-2">{course.CourseName}</td>
-                <td className="border px-4 py-2">{course.GradeLevel}</td>
-                <td className="border px-4 py-2">{course.CourseSubject}</td>
-                <td className="border px-4 py-2">
+                <td className="border px-2 py-2">{course.CourseName}</td>
+                <td className="border px-2 py-2">{course.GradeLevel}</td>
+                <td className="border px-2 py-2">{course.CourseSubject}</td>
+                <td className="border px-2 py-2">
                   <Button
                     text="View"
                     bgColor="bg-yellow-300"

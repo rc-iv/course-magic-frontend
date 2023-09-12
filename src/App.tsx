@@ -31,9 +31,9 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="App flex flex-col min-h-screen">
+      <div className="App flex flex-col min-h-screen m-auto">
         <Header userLoggedIn={userLoggedIn} onLogout={handleLogout} />
-        <main className="flex-grow bg-gradient-to-r from-indigo-950 to-indigo-800 h-screen">
+        <main className="flex-grow bg-gradient-to-r from-indigo-950 to-indigo-800">
           <Routes>
             <Route path="/" element={<FeatureSection />} />
             <Route path="/signup" element={<SignUp onLogin={handleLogin} />} />
