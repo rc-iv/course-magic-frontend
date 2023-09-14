@@ -9,6 +9,7 @@ const FeatureSection: React.FC = () => {
       {/* Search Bar and Button */}
       <div className="flex justify-center items-center mb-16">
         <input
+          aria-label="Course Generator"
           type="text"
           placeholder="Generate your course now!"
           className="border p-2 rounded mr-4 w-1/2 md:w-1/6"
@@ -17,7 +18,7 @@ const FeatureSection: React.FC = () => {
           text="Generate"
           bgColor="bg-yellow-300"
           textColor="text-indigo-900"
-          onClick={() => window.location.href = '/signup'}
+          onClick={() => (window.location.href = "/signup")}
         />
       </div>
 
@@ -26,6 +27,7 @@ const FeatureSection: React.FC = () => {
         {/* Syllabus Text Embed */}
         <div className="flex w-3/4 m-auto md:h-full md:w-1/3">
           <iframe
+            loading="lazy"
             title="Syllabus embed"
             className="h-[500px] w-full"
             src="https://docs.google.com/document/d/e/2PACX-1vR7nePwaKodzS-7I1_Jxt4QfHKb-TQ16rqd02W2v0bbRw0_z682dTU0z7v7s5P7HA/pub?embedded=true"
@@ -34,6 +36,7 @@ const FeatureSection: React.FC = () => {
         {/* Lesson Plan Embed */}
         <div className="flex w-3/4 m-auto md:h-full md:w-1/3">
           <iframe
+            loading="lazy"
             title="Lesson Plan embed"
             className="h-[500px] w-full"
             src="https://docs.google.com/document/d/e/2PACX-1vTzEBlWCN5VpvIO2I7_F5ywzadFja8G2LgvgVoh83KfkmfoojkNWsSyAzMoM8plhQ/pub?embedded=true"
@@ -42,6 +45,7 @@ const FeatureSection: React.FC = () => {
         {/* Problem Set Embed */}
         <div className="flex w-3/4 m-auto md:h-full md:w-1/3">
           <iframe
+            loading="lazy"
             title="Problem Set embed"
             className="h-[500px] w-full"
             src="https://docs.google.com/document/d/e/2PACX-1vSVPfGHfdTun7CwvUb1V21myptICQjqmCJWToAbWp2hh8S3bxh_GxdapNLzge1N8w/pub?embedded=true"
